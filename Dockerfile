@@ -15,7 +15,9 @@ RUN composer install --no-ansi --no-suggest --no-scripts --prefer-dist --no-prog
 USER root
 
 RUN find /usr/share/GeoIP -not -user www-data -execdir chown "www-data:" {} \+ && \
-    find /var/www/site -not -user www-data -execdir chown "www-data:" {} \+
+    find /var/www/site -not -user www-data -execdir chown "www-data:" {} \+ \
+
+RUN mysql -u root -h saas_db -p"zako1996" -e "CREATE DATABASE saas_db CHARACTER SET utf8 COLLATE utf8_general_ci;"
 
 #HEALTHCHECK \
 #  --interval=30s \

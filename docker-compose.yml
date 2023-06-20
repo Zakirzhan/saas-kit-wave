@@ -5,18 +5,16 @@ services:
         build:
             context: ./vendor/laravel/sail/runtimes/8.0
             dockerfile: Dockerfile
-            args:
-                WWWGROUP: '${WWWGROUP}'
         image: sail-8.0/app
         ports:
-            - '${APP_PORT:-80}:80'
+            - '7777:80'
         environment:
-            WWWUSER: '${WWWUSER}'
             LARAVEL_SAIL: 1
         volumes:
             - '.:/var/www/html'
         networks:
             - sail
+        container_name: saas_kit
         depends_on:
             - mysql
             - redis
@@ -25,13 +23,13 @@ services:
         ports:
             - '${FORWARD_DB_PORT:-3306}:3306'
         environment:
-            MYSQL_ROOT_PASSWORD: '${DB_PASSWORD}'
-            MYSQL_DATABASE: '${DB_DATABASE}'
-            MYSQL_USER: '${DB_USERNAME}'
-            MYSQL_PASSWORD: '${DB_PASSWORD}'
-            MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
+            MYSQL_DATABASE: 'saas_db'
+            MYSQL_USER: 'root'
+            MYSQL_PASSWORD: 'zako1996'
         volumes:
             - 'sailmysql:/var/lib/mysql'
+            - './mysql/my.cnf:/etc/mysql/my.cnf'
+        container_name: saas_db
         networks:
             - sail
         healthcheck:
